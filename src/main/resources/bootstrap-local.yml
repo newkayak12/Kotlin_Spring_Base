@@ -1,0 +1,9 @@
+spring:
+
+#    profiles:
+#      - local
+#      - rabbit
+  application:
+    name: base
+  config:
+    import: configserver:http://newkayak.iptime.org:8888
