@@ -27,23 +27,11 @@ import javax.annotation.PostConstruct
 @RequiredArgsConstructor
 class Config {
 
-    private var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
-    private var jwtAccessDeniedHandler: JwtAccessDenialHandler
-    private var jwtSecurityConfig: JwtSecurityConfig
-    private var byPass: ByPass
+    @Autowired private lateinit var jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint
+    @Autowired private lateinit var jwtAccessDeniedHandler: JwtAccessDenialHandler
+    @Autowired private lateinit var jwtSecurityConfig: JwtSecurityConfig
+    @Autowired private lateinit var byPass: ByPass
 
-    @Autowired
-    constructor(
-            jwtAuthenticationEntryPoint: JwtAuthenticationEntryPoint,
-            jwtAccessDenialHandler: JwtAccessDenialHandler,
-            jwtSecurityConfig: JwtSecurityConfig,
-            byPass: ByPass
-    ) {
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint
-        this.jwtAccessDeniedHandler = jwtAccessDenialHandler
-        this.jwtSecurityConfig = jwtSecurityConfig
-        this.byPass = byPass
-    }
 
     @PostConstruct
     fun enabled() {

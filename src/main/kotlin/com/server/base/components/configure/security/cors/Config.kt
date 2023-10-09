@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+
 import javax.annotation.PostConstruct
 
 @Configuration(value = "cross_origin_configuration")
@@ -18,7 +20,7 @@ class Config {
     }
 
     @Bean
-    fun corsConfigurationSource(): CorsConfiguration {
+    fun corsConfigurationSource(): CorsConfigurationSource {
         val config =  CorsConfiguration();
 
         config.allowCredentials = true;
@@ -29,6 +31,6 @@ class Config {
 
         val source =  UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return config
+        return source
     }
 }

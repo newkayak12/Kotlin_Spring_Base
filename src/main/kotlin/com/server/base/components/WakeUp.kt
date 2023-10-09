@@ -1,8 +1,6 @@
 package com.server.base.components
 
 import com.server.base.repository.userRepository.UserRepository
-import jdk.nashorn.internal.runtime.regexp.joni.Config.log
-import lombok.RequiredArgsConstructor
 import lombok.extern.slf4j.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.event.ApplicationReadyEvent
