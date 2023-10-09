@@ -2,7 +2,7 @@ package com.server.base.components.configure.security.jwt
 
 import com.server.base.components.configure.security.properties.duration.TokenDuration
 import com.server.base.components.constants.Constants
-import com.server.base.repository.dto.AccountDto
+import com.server.base.repository.dto.reference.AccountDto
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import lombok.RequiredArgsConstructor
@@ -19,9 +19,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.security.Key
-import java.security.Principal
 import java.util.*
-import java.util.function.BiFunction
 import java.util.stream.IntStream
 import kotlin.collections.ArrayList
 import kotlin.streams.toList

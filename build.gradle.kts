@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.statistics.ReportStatisticsToElasticSearch.url
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -10,12 +9,13 @@ plugins {
 
     id("org.springframework.boot") version "2.7.16"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-    id ("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
+//    id ("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
-    kotlin("kapt") version kotlinVersion
+    kotlin("kapt") version "1.7.10"
+
     idea
 
 }
@@ -77,7 +77,8 @@ dependencies {
     implementation ("com.querydsl:querydsl-core")
     implementation ("org.mariadb.jdbc:mariadb-java-client")
     implementation ("com.querydsl:querydsl-jpa:${queryDslVersion}")
-    kapt ("com.querydsl:querydsl-apt:${queryDslVersion}")
+    kapt ("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
 //ModelMapper
     implementation ("org.modelmapper:modelmapper:3.1.1")
@@ -110,7 +111,7 @@ tasks.withType<Test> {
 
 idea {
     module {
-        val kaptMain = file("build/generated/source/kapt/main")
+        val kaptMain = file("build/generated/source/querydsl/main")
         sourceDirs.add(kaptMain)
         generatedSourceDirs.add(kaptMain)
     }

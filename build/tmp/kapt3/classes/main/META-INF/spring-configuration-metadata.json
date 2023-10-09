@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.server.base.components.configure.security.properties.duration.TokenDuration",
+      "sourceType": "com.server.base.components.configure.security.properties.duration.TokenDuration"
+    },
+    {
+      "name": "security",
+      "type": "com.server.base.components.configure.security.properties.byPass.ByPass",
+      "sourceType": "com.server.base.components.configure.security.properties.byPass.ByPass"
+    }
+  ],
+  "properties": [
+    {
+      "name": "security.ignore-path",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.server.base.components.configure.security.properties.byPass.ByPass"
+    }
+  ],
+  "hints": []
+}
