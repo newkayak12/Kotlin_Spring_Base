@@ -7,7 +7,7 @@ import java.security.Principal
 
 
 @RestController
-@RequestMapping(value = [gi])
+@RequestMapping(value = ["/api/v1/test"])
 class TestController {
 
     @GetMapping
