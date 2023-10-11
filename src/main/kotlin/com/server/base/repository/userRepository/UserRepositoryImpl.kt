@@ -18,15 +18,15 @@ class UserRepositoryImpl: QuerydslRepositorySupport(Account::class.java), UserRe
     private lateinit var query: JPQLQueryFactory
 
 
-    private fun eqUserId(userId: String): BooleanExpression? {
+    private fun eqUserId(userId: String?): BooleanExpression? {
         return if (StringUtils.hasText(userId)) account.userId.eq(userId) else null
     }
 
-    private fun eqUserNo(userNo: Long): BooleanExpression? {
+    private fun eqUserNo(userNo: Long?): BooleanExpression? {
         return if (Objects.nonNull(userNo)) account.userNo.eq(userNo) else null
     }
 
-    private fun eqRefreshToken(refreshToken: String): BooleanExpression? {
+    private fun eqRefreshToken(refreshToken: String?): BooleanExpression? {
         return if (StringUtils.hasText(refreshToken)) account.refreshToken.eq(refreshToken) else null
     }
 
@@ -45,9 +45,9 @@ class UserRepositoryImpl: QuerydslRepositorySupport(Account::class.java), UserRe
                 )
                         .from(account)
                         .where(
-                                eqUserId(signInRequest!!.userId!!),
-                                eqUserNo(signInRequest.userNo!!),
-                                eqRefreshToken(signInRequest.refreshToken!!)
+                                eqUserId(signInRequest?.userId),
+                                eqUserNo(signInRequest?.userNo),
+                                eqRefreshToken(signInRequest?.refreshToken)
                         )
                         .fetchOne()
         )

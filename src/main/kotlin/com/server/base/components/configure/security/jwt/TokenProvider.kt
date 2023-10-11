@@ -1,5 +1,6 @@
 package com.server.base.components.configure.security.jwt
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.server.base.components.configure.security.properties.duration.TokenDuration
 import com.server.base.components.constants.Constants
 import com.server.base.repository.dto.reference.AccountDto
@@ -8,8 +9,10 @@ import io.jsonwebtoken.security.Keys
 import lombok.RequiredArgsConstructor
 import lombok.extern.slf4j.Slf4j
 import org.modelmapper.ModelMapper
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.DependsOn
+import org.springframework.http.codec.json.Jackson2JsonEncoder
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
@@ -21,14 +24,13 @@ import java.nio.file.Paths
 import java.security.Key
 import java.util.*
 import java.util.stream.IntStream
-import kotlin.collections.ArrayList
 import kotlin.streams.toList
 
 @Component(value = "TokenProvider")
 @DependsOn(value = ["constants", "security_token_properties"])
 @Slf4j
 @RequiredArgsConstructor
-class TokenProvider {
+class TokenProvider: InitializingBean {
 
     private lateinit var key: Key;
     private val BODY: String = "BODY";
@@ -45,12 +47,14 @@ class TokenProvider {
     }
 
 
-    @Override
-    fun afterPropertiesSet() {
-        key = Keys.hmacShaKeyFor(Base64.getEncoder().encode(getSecretKey().toByteArray(StandardCharsets.UTF_8)));
+    //기존 TokenManager와 비슷하다.
+    @Throws(Exception::class)
+    override fun afterPropertiesSet() {
+        key = Keys.hmacShaKeyFor(Base64.getEncoder().encode(getSecretKey().toByteArray(StandardCharsets.UTF_8)))
     }
 
     public fun createToken( authentication: Authentication): String {
+
         return BEARER_PREFIX + Jwts.builder()
                 .setSubject(Constants.AUTHORIZATION)
                 .setIssuer(Constants.PROJECT_NAME)

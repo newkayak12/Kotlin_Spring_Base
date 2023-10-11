@@ -1,23 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
-
-
-
 plugins {
     val kotlinVersion = "1.6.21"
 
     id("org.springframework.boot") version "2.7.16"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
-//    id ("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
-
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version "1.7.10"
-
     idea
-
 }
 
 group = "com.base"
@@ -27,11 +20,13 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
+val asciidoctorExt: Configuration by configurations.creating
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
 }
+
 
 repositories {
     mavenCentral()
@@ -40,6 +35,7 @@ repositories {
 }
 
 extra["springCloudVersion"] = "2021.0.8"
+val snippetsDir by extra { file("build/generated-snippets") }
 
 dependencies {
     val queryDslVersion = "5.0.0"
@@ -47,6 +43,8 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
+    asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
@@ -115,5 +113,35 @@ idea {
         val kaptMain = file("build/generated/source/querydsl/main")
         sourceDirs.add(kaptMain)
         generatedSourceDirs.add(kaptMain)
+    }
+}
+tasks {
+    test {
+        outputs.dir(snippetsDir)
+    }
+
+    asciidoctor {
+        inputs.dir(snippetsDir)
+        dependsOn(test)
+        doFirst {
+            delete {
+                file("src/main/resources/static/docs")
+            }
+        }
+    }
+
+    register("copyHTML", Copy::class) {
+        dependsOn(asciidoctor)
+        from(file("build/asciidoc/html5"))
+        into(file("src/main/resources/static/docs"))
+    }
+
+    build {
+        dependsOn(getByName("copyHTML"))
+    }
+
+    bootJar {
+        dependsOn(asciidoctor)
+        dependsOn(getByName("copyHTML"))
     }
 }

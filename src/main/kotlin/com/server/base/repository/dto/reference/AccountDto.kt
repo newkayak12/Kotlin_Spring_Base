@@ -1,5 +1,6 @@
 package com.server.base.repository.dto.reference
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.querydsl.core.annotations.QueryProjection
 import com.server.base.components.enums.Role
 import com.server.base.components.validations.AccountValid
@@ -7,14 +8,16 @@ import com.server.base.components.validations.ProfileValid
 import com.server.base.components.validations.TicketValid
 import io.swagger.v3.oas.annotations.Hidden
 import io.swagger.v3.oas.annotations.media.Schema
-import lombok.Data
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.util.StringUtils
+import java.io.Serializable
 import java.time.LocalDateTime
+import java.util.*
 import javax.validation.constraints.NotEmpty
 
-open class AccountDto: UserDetails {
+@JsonIgnoreProperties(value = ["regDate", "lastSignDate", "userPwd", "role", "refreshToken"], allowGetters = false)
+open class AccountDto: UserDetails, Serializable {
 
     @NotEmpty(message = "계정 정보가 필요합니다.", groups = [ ProfileValid.Save::class, TicketValid.Raise::class])
     open var userNo: Long? = null;
@@ -82,41 +85,46 @@ open class AccountDto: UserDetails {
 
 
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
-        var authorities: MutableSet<GrantedAuthority> =  HashSet();
 
-        return authorities;
-    }
-
-    override fun getPassword(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun getUsername(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun isAccountNonExpired(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun isAccountNonLocked(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun isCredentialsNonExpired(): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun isEnabled(): Boolean {
-        TODO("Not yet implemented")
-    }
     @Hidden
-    public fun isInValid (): Boolean {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
+        return setOf(SimpleGrantedAuthority(role!!.name))
+    }
 
-        return  (this.userNo != null) ||
-                (StringUtils.hasText(this.userId) )||
-                (this.role != null);
+    @Hidden
+    override fun getPassword(): String? {
+        return null
+    }
+
+    @Hidden
+    override fun getUsername(): String? {
+        return this.userId
+    }
+
+    @Hidden
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+
+    @Hidden
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+    @Hidden
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+    @Hidden
+    override fun isEnabled(): Boolean {
+        return true
+    }
+
+    @Hidden
+    open fun isInValid(): Boolean? {
+        return Objects.isNull(userNo) ||
+                Objects.isNull(userId) ||
+                Objects.isNull(role)
     }
 }
