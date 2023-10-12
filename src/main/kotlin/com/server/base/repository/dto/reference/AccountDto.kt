@@ -122,7 +122,7 @@ open class AccountDto: UserDetails, Serializable {
     }
 
     @Hidden
-    open fun isInValid(): Boolean? {
+    open fun isInValid(): Boolean {
         return Objects.isNull(userNo) ||
                 Objects.isNull(userId) ||
                 Objects.isNull(role)

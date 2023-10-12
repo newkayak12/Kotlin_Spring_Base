@@ -29,10 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
 
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@EnableConfigurationProperties
-@ActiveProfiles(value = ["local"])
+
 class UserControllerTest(): AbstractControllerTest() {
 
     val prefix = "/api/v1/user"

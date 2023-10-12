@@ -46,10 +46,14 @@ dependencies {
     asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 
+
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.batch:spring-batch-test")
-    testImplementation("org.mockito:mockito-inline")
+//    testImplementation("org.mockito:mockito-inline")
+    testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin")
+
     testImplementation("org.assertj:assertj-core:3.23.1")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

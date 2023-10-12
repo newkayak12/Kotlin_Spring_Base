@@ -1,5 +1,6 @@
 package com.server.base.util
 
+import org.mockito.Mockito
 import org.springframework.core.io.ClassPathResource
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.util.ReflectionTestUtils
@@ -69,4 +70,6 @@ class TestUtil {
             }
         })
     }
+
+
 }
